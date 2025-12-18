@@ -1,0 +1,525 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #6c63ff;
+    --primary-dark: #5a52d5;
+    --secondary-color: #ff6584;
+    --background-color: #121826;
+    --card-bg: #1e2432;
+    --card-border: #2d3748;
+    --text-primary: #f7fafc;
+    --text-secondary: #a0aec0;
+    --accent-green: #10b981;
+    --accent-red: #ef4444;
+    --accent-yellow: #f59e0b;
+    --grid-line: #2a3140;
+    --font-main: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header Styles */
+.header {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--card-border);
+    margin-bottom: 30px;
+}
+
+.header-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-content h1 i {
+    color: var(--primary-color);
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.header-stats {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.stat {
+    background-color: var(--card-bg);
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--card-border);
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-family: var(--font-mono);
+}
+
+.btn-reset {
+    background-color: transparent;
+    color: var(--accent-red);
+    border: 1px solid var(--accent-red);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: var(--font-main);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.btn-reset:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.tree-container {
+    position: relative;
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    padding: 30px;
+    overflow: auto;
+    min-height: 600px;
+    background-image: 
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 80px 80px;
+    background-position: center center;
+}
+
+#connection-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.tree-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 80px 100px;
+    z-index: 2;
+    padding: 40px;
+}
+
+/* Skill Node Styles */
+.skill-node {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    user-select: none;
+}
+
+.skill-node:hover {
+    transform: scale(1.1);
+}
+
+.skill-node.locked {
+    background-color: #2d3748;
+    border: 3px solid #4a5568;
+    color: #718096;
+    cursor: not-allowed;
+}
+
+.skill-node.unlocked {
+    background-color: var(--card-bg);
+    border: 3px solid var(--primary-color);
+    color: var(--text-primary);
+    box-shadow: 0 0 15px rgba(108, 99, 255, 0.3);
+}
+
+.skill-node.maxed {
+    border-color: var(--accent-yellow);
+    background-color: rgba(245, 158, 11, 0.1);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+.skill-icon {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+}
+
+.skill-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.skill-level {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    background-color: var(--primary-color);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: 2px solid var(--card-bg);
+}
+
+.skill-node.maxed .skill-level {
+    background-color: var(--accent-yellow);
+}
+
+.skill-node.locked .skill-level {
+    background-color: #4a5568;
+}
+
+/* Controls Panel */
+.controls-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.info-panel, .selected-skill-info {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    padding: 24px;
+}
+
+.info-panel h3, .selected-skill-info h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.info-panel ul {
+    padding-left: 20px;
+    margin-bottom: 30px;
+}
+
+.info-panel li {
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+}
+
+.legend {
+    margin-top: 25px;
+}
+
+.legend-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.legend-item .skill-node {
+    width: 40px;
+    height: 40px;
+    cursor: default;
+    transform: none !important;
+}
+
+.legend-item .skill-node.locked {
+    border-width: 2px;
+}
+
+.legend-item .skill-node.unlocked {
+    border-width: 2px;
+}
+
+.legend-item .skill-node.maxed {
+    border-width: 2px;
+}
+
+/* Selected Skill Info */
+.no-selection {
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+    padding: 40px 0;
+}
+
+.skill-details h4 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.skill-description {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.7;
+}
+
+.skill-level-info {
+    background-color: rgba(30, 36, 50, 0.7);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--card-border);
+}
+
+.level-bars {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.level-bar {
+    height: 10px;
+    flex: 1;
+    background-color: #4a5568;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.level-bar.active {
+    background-color: var(--primary-color);
+}
+
+.level-bar.maxed {
+    background-color: var(--accent-yellow);
+}
+
+.skill-requirements {
+    margin-bottom: 25px;
+}
+
+.skill-requirements h5 {
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+}
+
+#requirements-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#requirements-list li {
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    background-color: rgba(42, 49, 64, 0.7);
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#requirements-list li.met {
+    color: var(--accent-green);
+    border-left: 4px solid var(--accent-green);
+}
+
+#requirements-list li.unmet {
+    color: var(--accent-red);
+    border-left: 4px solid var(--accent-red);
+}
+
+.btn-upgrade {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 10px;
+    font-family: var(--font-main);
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-upgrade:hover:not(:disabled) {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-upgrade:disabled {
+    background-color: #4a5568;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Tooltip */
+.tooltip {
+    position: absolute;
+    background-color: rgba(30, 36, 50, 0.95);
+    border: 1px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 15px;
+    max-width: 300px;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.tooltip h4 {
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.tooltip p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.tooltip .tooltip-level {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: var(--accent-yellow);
+    font-weight: 600;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .tree-grid {
+        gap: 60px 70px;
+        padding: 30px;
+    }
+    
+    .skill-node {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 992px) {
+    .tree-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 50px 60px;
+    }
+    
+    .header-stats {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    
+    .btn-reset {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .tree-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px 50px;
+    }
+    
+    .header-content h1 {
+        font-size: 2rem;
+    }
+    
+    .stat {
+        min-width: 120px;
+    }
+    
+    .controls-panel {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .tree-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+    }
+    
+    .tree-container {
+        padding: 15px;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+}
